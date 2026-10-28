@@ -2,6 +2,8 @@
 
 코딩 완전 초보자가 VS Code·OpenCode 모사 화면을 클릭하며 자기소개 웹페이지 제작 흐름을 배우는 한국어 온라인 교육 MVP입니다.
 
+비공개 배포: https://vibe-school-first-steps.sinjirei.chatgpt.site (소유자의 ChatGPT 로그인 필요)
+
 ## 실행하기
 Node.js 20.19+ 또는 22.12+가 필요합니다. 터미널에서 이 폴더로 이동한 뒤:
 
