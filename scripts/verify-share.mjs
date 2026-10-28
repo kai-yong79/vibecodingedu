@@ -1,0 +1,16 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import assert from 'node:assert/strict';
+const root = resolve(import.meta.dirname, '..');
+const html = readFileSync(resolve(root, '../delivery/offline-preview.html'), 'utf8');
+const scripts = [...html.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)];
+assert.equal(scripts.length, 1, 'one self-contained module');
+assert(!/<script[^>]+src=/.test(html), 'no external script');
+assert(!/<link[^>]+rel="stylesheet"/.test(html), 'no external stylesheet');
+const check = spawnSync(process.execPath, ['--input-type=module', '--check'], { input: scripts[0][1], encoding: 'utf8' });
+assert.equal(check.status, 0, check.stderr);
+const index = readFileSync(resolve(root, 'dist/index.html'), 'utf8');
+assert(index.includes('src="./assets/'), 'relative JavaScript asset path');
+assert(index.includes('href="./assets/'), 'relative CSS asset path');
+console.log('PASS: standalone JavaScript syntax, inline assets, relative hosting paths.');
